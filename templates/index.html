@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="gradient-background">
+    <h1>To-Do List</h1>
+    <form id="task-form" action="{{ url_for('add_task') }}" method="POST">
+        <input type="text" id="task-input" name="task" placeholder="Enter a task...">
+        <button type="submit" class="add-button">Add Task</button>
+    </form>
+    <span id="error-message"></span>
+    <ul>
+        {% for task in tasks %}
+            <li id="task-{{ loop.index0 }}" {% if task.completed %}class="completed"{% endif %}>
+                <span>{{ task.description }}</span>
+                <form action="{{ url_for('complete_task') }}" method="POST" style="display: inline;">
+                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                    <button type="button" class="complete-button">Complete</button>
+                </form>
+                <form action="{{ url_for('delete_task') }}" method="POST" style="display: inline;">
+                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

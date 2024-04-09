@@ -1,0 +1,44 @@
+.gradient-background {
+    background: darkslategray
+    
+}
+
+.add-button, .complete-button, .delete-button {
+    background-color: #9e9e9e; 
+    color: #fff; 
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#error-message {
+    color: red;
+    margin-left: 10px;
+    display: none;
+}
+
+h1 {
+    color: white; 
+}
+
+ul {
+    color: white; 
+    list-style-type: none; 
+    padding: 0;
+}
+
+li {
+    padding: 10px 0; /* adds vertical spacing between each task */
+}
+
+body {
+    text-align: center; /* center aligns all text and UI elements */
+}
+
+
+
+.checkmark::after {
+    content: '\2713'; /* Unicode character for check mark */
+    margin-left: 5px; /* Add spacing between check mark and text */
+}
