@@ -19,3 +19,12 @@ def delete_task():
     task_index = int(request.form['task_index'])
     del tasks[task_index]
     return redirect(url_for('index'))
+
+@app.route('/complete_task', methods=['POST'])
+def complete_task():
+    task_index = int(request.form['task_index'])
+    tasks[task_index]['completed'] = True
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
