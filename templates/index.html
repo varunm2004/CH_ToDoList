@@ -4,30 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: rgb(5, 45, 69);
+            color: white;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+        .checkmark::after {
+            content: '✔️';
+        }
+        button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .complete-button {
+            background-color: green;
+            color: white;
+        }
+        .delete-button {
+            background-color: red;
+            color: white;
+        }
+        #error-message {
+            color: red;
+            display: none;
+        }
+    </style>
 </head>
-<body class="gradient-background">
+<body>
     <h1>To-Do List</h1>
     <form id="task-form" action="{{ url_for('add_task') }}" method="POST">
-        <input type="text" id="task-input" name="task" placeholder="Enter a task...">
-        <button type="submit" class="add-button">Add Task</button>
+        <input type="text" id="task-input" name="task">
+        <button type="submit">Add Task</button>
     </form>
-    <span id="error-message"></span>
+    <p id="error-message">This field cannot be empty</p>
     <ul>
         {% for task in tasks %}
-            <li id="task-{{ loop.index0 }}" {% if task.completed %}class="completed"{% endif %}>
-                <span>{{ task.description }}</span>
-                <form action="{{ url_for('complete_task') }}" method="POST" style="display: inline;">
-                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
-                    <button type="button" class="complete-button">Complete</button>
-                </form>
-                <form action="{{ url_for('delete_task') }}" method="POST" style="display: inline;">
-                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
-                    <button type="submit" class="delete-button">Delete</button>
-                </form>
+            <li id="task-{{ loop.index0 }}" class="{{ 'completed' if task.completed }}">
+                {{ task.description }}
+                <div>
+                    {% if not task.completed %}
+                        <form action="{{ url_for('complete_task') }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                            <button type="submit" class="complete-button">Complete</button>
+                        </form>
+                    {% else %}
+                        <button class="complete-button checkmark"></button>
+                    {% endif %}
+                    <form action="{{ url_for('delete_task') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                </div>
             </li>
         {% endfor %}
     </ul>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
